@@ -1,0 +1,211 @@
+<style type="text/css">
+
+body {
+  display: grid;
+  justify-items: center;
+  font-family: consolas;
+}
+.opB {
+width: 80%;
+color: #111;
+background-color: #fff;
+border: 1px solid;
+margin-top: 5px;
+border-radius: 5px;
+transition: all 0.4s ease-in-out;
+outline: none;
+font-size: 14px;
+font-family: consolas;
+ margin-bottom: 8px;
+}
+.opB:hover{
+  letter-spacing: 2px;
+  width: 90%;
+}
+
+#box {
+  justify-items: center;
+  display: grid;
+  width: 60%
+}
+.qImage {
+  height: 250px;
+  max-width: 700px;
+  border-radius: 10px;
+}
+.TeamPick {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	width: 80%;
+	justify-items: center;
+}
+.InSUB {
+  color: black;
+  background-color: white;
+  border: 1px black solid;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+  font-family: consolas;
+  font-size: 16;
+  margin-top: 10px;
+  width: 50%;
+}
+.InSUB:hover {
+  color: white;
+  background-color: black;
+}
+#tinput {
+  border: 0px;
+  border-bottom: 2px black solid;
+  outline: none;
+  border-radius: 0px 0px 0px 10px;
+  padding-left: 10px;
+  width: 95%;
+  transition: all 0.4s ease-in-out;
+  margin-top: 10px;
+}
+#tinput:hover {
+  width: 100%;
+}
+#tinput::placeholder {
+  font-family: consolas;
+}
+
+
+
+
+
+
+
+</style>
+<body>
+	<div id="box">
+	<h1 id="quest">Qui êtes vous?</h1>
+	<button id="op1" onclick="connect('GA')" class="opB">Mamine</button>
+	<div class="TeamPick">
+	<button id="op2" onclick="connect(1)" class="opB">L'équipe 1</button>
+	<button id="op3" onclick="connect(2)" class="opB">L'équipe 2</button>
+	<button id="op4" onclick="connect(3)" class="opB">L'équipe 3</button>
+	<button id="op5" onclick="connect(4)" class="opB">L'équipe 4</button>
+	</div>
+	</div>
+</body>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+const firebaseConfig = {
+  apiKey: "AIzaSyDJC8OdndoDJDtojCBj_9sa2GJRJ1hOF1E",
+  authDomain: "quiz-pour-mamine.firebaseapp.com",
+  databaseURL: "https://quiz-pour-mamine-default-rtdb.firebaseio.com",
+  projectId: "quiz-pour-mamine",
+  storageBucket: "quiz-pour-mamine.appspot.com",
+  messagingSenderId: "600368139590",
+  appId: "1:600368139590:web:892bb8ac90f71204e7a947",
+  measurementId: "G-MC4DB8FFFW"
+};
+
+const app = firebase.initializeApp(firebaseConfig);
+var team = 1
+const db = firebase.database();
+const qData = [{"q":">>>Question<<<", "op1":"op1", "op2":"op2", "op3":"op3", "op4":"op4", "op5":"op5", "img":"none", "type":"ops"}, {"q":">>>Question2<<<", "op1":"2op1", "op2":"2op2", "op3":"2op3", "op4":"2op4", "op5":"2op5", "img":"https://wooloo.ca/wp-content/uploads/2014/08/gateau-des-anges-ananas_wooloo-scaled.jpeg", "type":"inp"}]
+
+
+function connect(SelectedTeam) {
+	var proceed = true;
+	if (SelectedTeam === "GA") {
+		if (prompt("Mot de passe", "") != "Anniv'") {
+			proceed = false
+		}
+	}
+	if (proceed === true) {
+		team = SelectedTeam;
+		refresh()
+	}
+	else {
+		alert("Mot de passe Incorrect")
+	}
+}
+
+
+
+function answer(qN) {
+	qN -= 1
+
+	document.getElementById('quest').innerText = qData[qN]["q"]
+	document.getElementById('op1').innerText = qData[qN]["op1"]
+	document.getElementById('op2').innerText = qData[qN]["op2"]
+	document.getElementById('op3').innerText = qData[qN]["op3"]
+	document.getElementById('op4').innerText = qData[qN]["op4"]
+	document.getElementById('op5').innerText = qData[qN]["op5"]
+}
+
+function answered(op) {
+	if (team != "GA") {
+		firebase.database().ref().child("Teams").child(team).update({r:qData[question-1][op]})
+	} 
+	else {
+		firebase.database().ref().child("GA").update({"r":qData[question-1][op]})
+	}
+	
+}
+var question = null
+var snap = {}
+
+function submit() {
+	if (team != "GA") {
+		firebase.database().ref().child("Teams").child(team).update({r:document.getElementById('tinput').value})
+	} 
+	else {
+		firebase.database().ref().child("GA").update({"r":document.getElementById('tinput').value})
+	}
+}
+
+
+function refresh() {
+	firebase.database().ref().on('value', function (snapshot){
+		snap = snapshot
+		question = snapshot.val()["Question"]["n"]
+		if (snapshot.val()["Question"]["n"] != question) {
+			question = snapshot.val()["Question"]["n"]
+			console.log(question)
+			answer(question)
+		}
+		if (snapshot.val()["Question"]["statu"] === "result") {
+			document.getElementById('box').innerHTML = "<h1>Attention, les résultats sont lá!</h1>"
+		}
+		else if (snapshot.val()["Question"]["statu"] === "answer") {
+			var img = ""
+			if (qData[question-1]["img"] != "none") {
+				img = '<img id="qImage" class="qImage" src='+qData[question-1]["img"]+'>'
+			}
+			if (qData[question-1]["type"] === "ops") {
+			document.getElementById('box').innerHTML = '<h1 id="quest">>>>Question<<<</h1>'+img+'<button id="op1" onclick="answered('+"'op1')"+'" class="opB"></button><button id="op2"  onclick="answered('+"'op2')"+'" class="opB"></button><button id="op3" onclick="answered('+"'op3')"+'" class="opB"></button><button id="op4"  onclick="answered('+"'op4')"+'" class="opB"></button><button id="op5" onclick="answered('+"'op5')"+'" class="opB"></button>'
+			answer(question)
+		}
+		else {
+			document.getElementById('box').innerHTML = '<h1 id="quest">>>>Question<<<</h1>'+img+'<div style="width: 40%;display: grid;justify-items: center;"><input id="tinput" placeholder="'+"Et la réponse c'est..."+'"><button class="InSUB" onclick="submit()">Envoyer!</button></div>'
+		}
+		}
+		else if (snapshot.val()["Question"]["statu"]=== "start") {
+				var equipe = ""
+				if (team == "GA") {
+					equipe = "Mamine"
+				}
+				else {
+					equipe = "Équipe "+String(team)
+				}
+				document.getElementById('box').innerHTML = '<h1 id="quest">Bienvenus, '+equipe+'</h1><h1 style="opacity: 0.5;font-size: 25px;margin: -15px;">Preparez vous, ça va bientôt commencer!</h1><img>'
+		}
+	})
+}
+
+
+console.log("hello")
+
+
+
+
+
+</script>
