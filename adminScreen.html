@@ -1,0 +1,331 @@
+<style type="text/css">
+
+body {
+  display: grid;
+  justify-items: center;
+  font-family: consolas;
+  margin: 0;
+}
+#box {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  grid-template-rows: 1fr 5fr;
+}
+.results {
+  display: grid;
+  grid-template-columns: 6fr 5fr;
+  justify-items: center;
+  width: 100%;
+}
+.quesDiv{
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  border-bottom: 5px black solid;
+}
+.answers {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-right: 2px black solid;
+  width: 95%;
+  justify-items: center;
+  margin-left: 5%;
+}
+.leaderboard {
+  overflow-y:scroll;
+  height: 180px;
+  width: 100%;
+  font-size: 12px;
+  border-top: 2px black solid;
+}
+.TAnswer {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 3fr 1fr;
+  
+}
+.cCorrect {
+  opacity: 0;
+  transition: all 0.4s ease-in-out;
+  background-color: white;
+  border: 0px white solid;
+  width: 100%;
+  height: 100%;
+  justify-self: center;
+  border-radius: 10px 0px 0px 10px;
+  font-family: consolas;
+}
+.TAnswer:hover > .Ccorrect{
+  opacity: 1;
+  border: 1px black solid;
+  height: 100%;
+}
+.Ccorrect:hover{
+  letter-spacing: 2px;
+  color: white;
+  background-color: black;
+}
+.TAnswer p5{
+  opacity: 0.5;
+}
+.TAnswer p1 {
+  margin-left: 50px;
+  font-size: 20px;
+}
+
+.qImage {
+  height: 240px;
+  max-width: 700px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+.RDiv {
+  display: grid;
+  width: 100%;
+  justify-items: center;
+  grid-template-columns: 1fr;
+}
+#actions {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  border-top: 2px black solid;
+  /*position: fixed;
+  bottom: 0%;*/
+}
+.nextB {
+  margin: 10px;
+  width: 80%;
+  border: 1px black solid;
+  background-color: white;
+  height: 25px;
+  border-radius: 5px;
+  transition: all 0.4s ease-in-out;
+  font-family: consolas;
+}
+/*.nextB:hover {
+  width: 85%;
+  letter-spacing: 3px;
+  font-size: 13;
+}*/
+.opB {
+width: 80%;
+color: #111;
+background-color: #fff;
+border: 1px solid;
+margin-top: 5px;
+border-radius: 5px;
+transition: all 0.4s ease-in-out;
+outline: none;
+font-size: 14px;
+font-family: consolas;
+ margin-bottom: 8px;
+ height: auto;
+}
+.opB:hover{
+  letter-spacing: 2px;
+  width: 90%;
+}
+.InSUB {
+  color: black;
+  background-color: white;
+  border: 1px black solid;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+  font-family: consolas;
+  font-size: 16;
+  margin-top: 10px;
+  width: 50%;
+}
+.InSUB:hover {
+  color: white;
+  background-color: black;
+}
+#tinput {
+  border: 0px;
+  border-bottom: 2px black solid;
+  outline: none;
+  border-radius: 0px 0px 0px 10px;
+  padding-left: 10px;
+  width: 95%;
+  transition: all 0.4s ease-in-out;
+  margin-top: 10px;
+}
+#tinput:hover {
+  width: 100%;
+}
+#tinput::placeholder {
+  font-family: consolas;
+}
+
+
+
+
+</style>
+<body id="body">
+	<div id="box">
+	<h1 id="quest">Bienvenus sur le quiz de l'Anniv d'Anne!</h1>
+	<h1 style="opacity: 0.5;font-size: 25px;margin: -15px;">Preparez vous, ça va bientôt commencer!</h1>
+	<img>
+	</div>
+	<div id="actions">
+		<button onclick="next()" class="nextB">En avant!</button>
+	</div>
+</body>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDJC8OdndoDJDtojCBj_9sa2GJRJ1hOF1E",
+  authDomain: "quiz-pour-mamine.firebaseapp.com",
+  databaseURL: "https://quiz-pour-mamine-default-rtdb.firebaseio.com",
+  projectId: "quiz-pour-mamine",
+  storageBucket: "quiz-pour-mamine.appspot.com",
+  messagingSenderId: "600368139590",
+  appId: "1:600368139590:web:892bb8ac90f71204e7a947",
+  measurementId: "G-MC4DB8FFFW"
+};
+
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const qData = [{"q":">>>Question<<<", "op1":"op1", "op2":"op2", "op3":"op3", "op4":"op4", "op5":"op5", "img":"none", "type":"ops"}, {"q":">>>Question2<<<", "op1":"2op1", "op2":"2op2", "op3":"2op3", "op4":"2op4", "op5":"2op5", "img":"https://wooloo.ca/wp-content/uploads/2014/08/gateau-des-anges-ananas_wooloo-scaled.jpeg", "type":"inp"}]
+
+function start() {
+	firebase.database().ref().child("Question").update({"n":1, "statu":"answer"})
+	refresh()
+}
+firebase.database().ref().child("Question").update({"n":1, "statu":"start"})
+var blank = "On ne sais pas"
+firebase.database().ref().child("Teams").child(1).update({"r":blank	})
+firebase.database().ref().child("Teams").child(2).update({"r":blank	})
+firebase.database().ref().child("Teams").child(3).update({"r":blank	})
+firebase.database().ref().child("Teams").child(4).update({"r":blank	})
+firebase.database().ref().child("GA").update({"r":"Je ne sais pas"})
+
+
+
+
+var snap = undefined
+function refresh() {
+	firebase.database().ref().on('value', function (snapshot){
+		snap = snapshot
+		question = snapshot.val()["Question"]["n"]
+
+
+		if (question>qData.length) {
+			fini()
+		}
+
+		if (snapshot.val()["Question"]["statu"] === "answer") {
+			var img = ""
+			if (qData[question-1]["img"] != "none") {
+				img = '<img id="qImage" class="qImage" src='+qData[question-1]["img"]+'>'
+			}
+
+			document.getElementById('box').style = "justify-items: center;display: grid;width: 60%;grid-template-rows: none;height:90%;"
+			if (qData[question-1]["type"] === "ops") {
+				document.getElementById('box').innerHTML = document.getElementById('box').innerHTML = '<h1 id="quest">'+qData[question-1]["q"]+'</h1>'+img+'<button id="op1" class="opB">'+qData[question-1]["op1"]+'</button><button id="op2"  onclick="answered('+"'op1')"+'" class="opB">'+qData[question-1]["op2"]+'</button><button id="op3" class="opB">'+qData[question-1]["op3"]+'</button><button id="op4" class="opB">'+qData[question-1]["op4"]+'</button><button id="op5" class="opB">'+qData[question-1]["op5"]+'</button>'
+			}
+			else {
+				document.getElementById('box').innerHTML = '<h1 id="quest">>>>Question<<<</h1>'+img+'<div style="width: 40%;display: grid;justify-items: center;"><input id="tinput" placeholder="Écrivez votre réponse"><button class="InSUB">Envoyer!</button></div>'
+			}
+			
+			
+		}
+		else {
+			
+			leaderBoard = (organise([{"name": "Équipe 1", "value":snapshot.val()["Teams"][1]["points"]}, {"name": "Équipe 2", "value":snapshot.val()["Teams"][2]["points"]}, {"name": "Équipe 3", "value":snapshot.val()["Teams"][3]["points"]}, {"name": "Équipe 4", "value":snapshot.val()["Teams"][4]["points"]}], 4))
+			var lead = ""
+			for (var n = 0;n<leaderBoard.length;n++){
+				lead += '<div style="display: grid;grid-template-columns: 3fr 1fr;margin: 4%;border: 1px black solid;border-radius: 5px;background-color: white;width: 86%;padding-left: 4%;"><h1>'+leaderBoard[n]["name"]+'</h1><h1 style="font-weight:lighter;">'+leaderBoard[n]["value"]+'</h1></div>'
+			}
+			var img = ""
+			var lstyle = 'style="border-top: none; border-bottom: 2px black solid;height:100%;"'
+			console.log(qData[question-1]["img"])
+			if (qData[question-1]["img"] != "none") {
+				img = '<img class="qImage" src='+qData[question-1]["img"]+'>'
+				lstyle = ''
+				console.log(lstyle)
+			}
+			document.getElementById('box').style = ""
+			console.log(qData[question-1]["type"])
+			document.getElementById('box').innerHTML = 	'<h1 id="quest">'+qData[question-1]["q"]+'</h1><button id="T1" onclick="correct('+"1)"+'">'+snapshot.val()["Teams"][1]["r"]+'</button><button id="T2" onclick="correct('+"'2')"+'">'+snapshot.val()["Teams"][2]["r"]+'</button><button id="T3" onclick="correct('+"'3')"+'">'+snapshot.val()["Teams"][3]["r"]+'</button><button id="T4"  onclick="correct('+"'4')"+'">'+snapshot.val()["Teams"][4]["r"]+'</button><div style="overflow-y:scroll;height:300px">'+lead+"</div>"
+			document.getElementById('box').innerHTML = '<div class="quesDiv"><h1 id="quest">'+qData[question-1]["q"]+'</h1></div> <div class="results"><div class="answers"><div class="TAnswer"><div><p5>'+"Mamine dit:"+'</p5><br><p1>'+snapshot.val()["GA"]["r"]+'</p1></div></div><div class="TAnswer"><div><p5>'+"L'Équipe 1 dit:"+'</p5><br><p1>'+snapshot.val()["Teams"][1]["r"]+'</p1></div><button class="Ccorrect" onclick="correct('+"1)"+'">'+"C'est Correct!"+'</button> </div> <div class="TAnswer"><div><p5>'+"L'Équipe 2 dit:"+'</p5><br><p1>'+snapshot.val()["Teams"][2]["r"]+'</p1></div><button class="Ccorrect" onclick="correct('+"2)"+'">'+"C'est Correct!"+'</button></div> <div class="TAnswer"><div><p5>'+"L'Équipe 3 dit:"+'</p5><br><p1>'+snapshot.val()["Teams"][3]["r"]+'</p1></div><button class="Ccorrect" onclick="correct('+"3)"+'">'+"C'est Correct!"+'</button></div> <div class="TAnswer"><div><p5>'+"L'Équipe 4 dit:"+'</p5><br><p1>'+snapshot.val()["Teams"][4]["r"]+'</p1></div><button class="Ccorrect" onclick="correct('+"4)"+'">'+"C'est Correct!"+'</button></div></div><div class="RDiv">'+img+'<div class="leaderboard"'+lstyle+'>'+lead+'</div></div></div>'
+		}
+	})
+}
+
+var ftime = true
+
+function correct(team) {
+	console.log(snap)
+	console.log(team)
+	firebase.database().ref().child("Teams").child(team).update({"points":snap.val()["Teams"][team]["points"]+1})	
+}
+
+function next() {
+	console.log('answer')
+	console.log(snap)
+	console.log(snap === undefined)
+	if (snap != undefined) {
+		if (snap.val()["Question"]["statu"] === "answer") {
+			status('result')
+		}
+		else {
+			nques()
+			status('answer')
+		}
+	}
+	else {
+		start()
+	}
+}
+
+function nques() {
+
+	var blank = "On ne sais pas"
+	firebase.database().ref().child("Teams").child(1).update({"r":blank	})
+	firebase.database().ref().child("Teams").child(2).update({"r":blank	})
+	firebase.database().ref().child("Teams").child(3).update({"r":blank	})
+	firebase.database().ref().child("Teams").child(4).update({"r":blank	})
+	firebase.database().ref().child("GA").update({"r":"Je ne sais pas"})
+	firebase.database().ref().child("Question").update({"n":snap.val()["Question"]["n"]+1})
+}
+
+function status(status) {
+	console.log(status)
+	firebase.database().ref().child("Question").update({"statu":status})
+}
+function organise(data, length) {
+		var reo_d = [data[0]]
+		for (var n = 0;n<length;n++){
+				//console.log(data[n])
+			for (var i = 0;i<reo_d.length;i++){
+				if (reo_d[i]["value"] < data[n]["value"]){
+					reo_d.splice(i,0,data[n])
+					break
+				}
+			}
+			if ((reo_d.indexOf(data[n])>-1)===false) {
+				reo_d.push(data[n])
+			}
+		}
+	console.log(reo_d)
+	return reo_d
+}
+
+
+function fini() {
+	leaderBoard = (organise([{"name": "Équipe 1", "value":snap.val()["Teams"][1]["points"]}, {"name": "Équipe 2", "value":snap.val()["Teams"][2]["points"]}, {"name": "Équipe 3", "value":snap.val()["Teams"][3]["points"]}, {"name": "Équipe 4", "value":snap.val()["Teams"][4]["points"]}], 4))
+			var lead = ""
+			for (var n = 0;n<leaderBoard.length;n++){
+				lead += '<div style="display: grid;grid-template-columns: 3fr 1fr;margin-top: 2%;border: 1px black solid;border-radius: 5px;background-color: white;width: 86%;padding-left: 4%;"><h1>'+leaderBoard[n]["name"]+'</h1><h1 style="font-weight:lighter;">'+leaderBoard[n]["value"]+'</h1></div>'
+			}
+	document.getElementById('body').innerHTML = '<div id="box" style="grid-template-rows: 1fr;"></div>'
+	document.getElementById('box').innerHTML = '<h1>'+"Et le gagnant c'est..."+'</h1><div class="leaderboard" style="height:100%; width: 100%;overflow-y: unset;display:grid; justify-items:center;">'+lead+'</div>'
+}
+
+</script>
