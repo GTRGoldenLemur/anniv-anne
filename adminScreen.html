@@ -200,10 +200,10 @@ function start() {
 }
 firebase.database().ref().child("Question").update({"n":1, "statu":"start"})
 var blank = "On ne sais pas"
-firebase.database().ref().child("Teams").child(1).update({"r":blank	})
-firebase.database().ref().child("Teams").child(2).update({"r":blank	})
-firebase.database().ref().child("Teams").child(3).update({"r":blank	})
-firebase.database().ref().child("Teams").child(4).update({"r":blank	})
+firebase.database().ref().child("Teams").child(1).update({"r":blank	, "points": 0})
+firebase.database().ref().child("Teams").child(2).update({"r":blank	, "points": 0})
+firebase.database().ref().child("Teams").child(3).update({"r":blank	, "points": 0})
+firebase.database().ref().child("Teams").child(4).update({"r":blank	, "points": 0})
 firebase.database().ref().child("GA").update({"r":"Je ne sais pas"})
 
 
