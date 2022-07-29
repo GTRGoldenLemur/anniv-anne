@@ -191,7 +191,7 @@ const firebaseConfig = {
 
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-const qData = [{"q":">>>Question<<<", "op1":"op1", "op2":"op2", "op3":"op3", "op4":"op4", "op5":"op5", "img":"none", "type":"ops"}, {"q":">>>Question2<<<", "op1":"2op1", "op2":"2op2", "op3":"2op3", "op4":"2op4", "op5":"2op5", "img":"https://wooloo.ca/wp-content/uploads/2014/08/gateau-des-anges-ananas_wooloo-scaled.jpeg", "type":"inp"}]
+const qData = [{"q":"Quelle est sa couleur préférée ?", "op1":"Bleu", "op2":"Vert", "op3":"Rouge", "op4":"Violet", "op5":"Jaune", "img":"none", "type":"ops"}, {"q":"Quelle serai sa destination idéale pour un prochain voyage ?", "op1":"Maroc", "op2":"Galapagos", "op3":"Péloponnèse", "op4":"USA", "op5":"Budapest", "img":"none", "type":"ops"}]
 
 function start() {
 	firebase.database().ref().child("Question").update({"n":1, "statu":"answer"})
