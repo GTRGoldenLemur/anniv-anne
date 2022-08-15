@@ -122,10 +122,13 @@ const qData = [{"q":"Quelle est sa couleur préférée ?", "op1":"Bleu", "op2":"
 
 function connect(SelectedTeam) {
 	var proceed = true;
-	document.getElementById("tabTitle").innerText = SelectedTeam+" - Anne 70"
+	document.getElementById("tabTitle").innerText = "L'equipe "+SelectedTeam+" - Anne 70"
 	if (SelectedTeam === "GA") {
 		if (prompt("Mot de passe", "") != "Anniv'") {
 			proceed = false
+		}
+		else {
+			document.getElementById("tabTitle").innerText = "Mamine - Anne 70"
 		}
 	}
 	if (proceed === true) {
