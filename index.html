@@ -82,6 +82,11 @@ cursor: pointer;
 
 
 </style>
+
+<head>
+	<title id="tabTitle">Anne 70</title>
+</head>
+
 <body>
 	<div id="box">
 	<h1 id="quest">Qui êtes vous?</h1>
@@ -117,6 +122,7 @@ const qData = [{"q":"Quelle est sa couleur préférée ?", "op1":"Bleu", "op2":"
 
 function connect(SelectedTeam) {
 	var proceed = true;
+	document.getElementById("tabTitle").innerText = SelectedTeam+" - Anne 70"
 	if (SelectedTeam === "GA") {
 		if (prompt("Mot de passe", "") != "Anniv'") {
 			proceed = false
