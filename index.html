@@ -191,7 +191,7 @@ function refresh() {
 			for (var n = 0;n<leaderBoard.length;n++){
 				lead += '<div style="display: grid;grid-template-columns: 3fr 1fr;margin: 4%;border: 1px black solid;border-radius: 5px;background-color: white;width: 86%;padding-left: 4%;"><h1>'+leaderBoard[n]["name"]+'</h1><h1 style="font-weight:lighter;">'+leaderBoard[n]["value"]+'</h1></div>'
 			}
-			document.getElementById('box').innerHTML = "<h1>Attention, les résultats sont lá!</h1><div class='leaderboard'>"+lead+"</div>"
+			document.getElementById('box').innerHTML = "<h1>Attention, les résultats sont là!</h1><div class='leaderboard'>"+lead+"</div>"
 		}
 		else if (snapshot.val()["Question"]["statu"] === "answer") {
 			var img = ""
@@ -199,11 +199,11 @@ function refresh() {
 				img = '<img id="qImage" class="qImage" src='+qData[question-1]["img"]+'>'
 			}
 			if (qData[question-1]["type"] === "ops") {
-			document.getElementById('box').innerHTML = '<h1 id="quest">>>>Question<<<</h1>'+img+'<button id="op1" onclick="answered('+"'op1')"+'" class="opB"></button><button id="op2"  onclick="answered('+"'op2')"+'" class="opB"></button><button id="op3" onclick="answered('+"'op3')"+'" class="opB"></button><button id="op4"  onclick="answered('+"'op4')"+'" class="opB"></button><button id="op5" onclick="answered('+"'op5')"+'" class="opB"></button>'
+			document.getElementById('box').innerHTML = '<h1 id="quest">'+qData[question-1]["q"]+'</h1>'+img+'<button id="op1" onclick="answered('+"'op1')"+'" class="opB"></button><button id="op2"  onclick="answered('+"'op2')"+'" class="opB"></button><button id="op3" onclick="answered('+"'op3')"+'" class="opB"></button><button id="op4"  onclick="answered('+"'op4')"+'" class="opB"></button><button id="op5" onclick="answered('+"'op5')"+'" class="opB"></button>'
 			answer(question)
 		}
 		else {
-			document.getElementById('box').innerHTML = '<h1 id="quest">>>>Question<<<</h1>'+img+'<div style="width: 40%;display: grid;justify-items: center;"><input id="tinput" placeholder="'+"Et la réponse c'est..."+'"><button class="InSUB" onclick="submit()">Envoyer!</button></div>'
+			document.getElementById('box').innerHTML = '<h1 id="quest">'+qData[question-1]["q"]+'</h1>'+img+'<div style="width: 40%;display: grid;justify-items: center;"><input id="tinput" placeholder="'+"Et la réponse c'est..."+'"><button class="InSUB" onclick="submit()">Envoyer!</button></div>'
 		}
 		}
 		else if (snapshot.val()["Question"]["statu"]=== "start") {
@@ -214,7 +214,7 @@ function refresh() {
 				else {
 					equipe = "Équipe "+String(team)
 				}
-				document.getElementById('box').innerHTML = '<h1 id="quest">Bienvenus, '+equipe+'</h1><h1 style="opacity: 0.5;font-size: 25px;margin: -15px;">Preparez vous, ça va bientôt commencer!</h1><img>'
+				document.getElementById('box').innerHTML = '<h1 id="quest">Bienvenus, '+equipe+'</h1><h1 style="opacity: 0.5;font-size: 25px;margin: -15px;">Préparez vous, ça va bientôt commencer!</h1><img>'
 		}
 	})
 }
