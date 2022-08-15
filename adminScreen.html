@@ -171,7 +171,7 @@ cursor: pointer;
 	<div id="box">
 	<h1 id="quest">Bienvenus sur le quiz de l'Anniv d'Anne!</h1>
 	<div style="display: grid;justify-items: center;">
-		<h1 style="opacity: 0.5;font-size: 25px;margin: -15px;">Preparez vous, ça va bientôt commencer!</h1>
+		<h1 style="opacity: 0.5;font-size: 25px;margin: -15px;">Préparez vous, ça va bientôt commencer!</h1>
 		<img src="https://raw.githubusercontent.com/GTRGoldenLemur/anniv-anne/main/unitag_qrcode_standard.png"></img>
 	</div>
 	</div>
@@ -236,7 +236,7 @@ function refresh() {
 				document.getElementById('box').innerHTML = document.getElementById('box').innerHTML = '<h1 id="quest">'+qData[question-1]["q"]+'</h1>'+img+'<button id="op1" class="opB">'+qData[question-1]["op1"]+'</button><button id="op2"  onclick="answered('+"'op1')"+'" class="opB">'+qData[question-1]["op2"]+'</button><button id="op3" class="opB">'+qData[question-1]["op3"]+'</button><button id="op4" class="opB">'+qData[question-1]["op4"]+'</button><button id="op5" class="opB">'+qData[question-1]["op5"]+'</button>'
 			}
 			else {
-				document.getElementById('box').innerHTML = '<h1 id="quest">>>>Question<<<</h1>'+img+'<div style="width: 40%;display: grid;justify-items: center;"><input id="tinput" placeholder="Écrivez votre réponse"><button class="InSUB">Envoyer!</button></div>'
+				document.getElementById('box').innerHTML = '<h1 id="quest">'+qData[question-1]['q']+'</h1>'+img+'<div style="width: 40%;display: grid;justify-items: center;"><input id="tinput" placeholder="Écrivez votre réponse"><button class="InSUB">Envoyer!</button></div>'
 			}
 			
 			
@@ -331,7 +331,7 @@ function fini() {
 				lead += '<div style="display: grid;grid-template-columns: 3fr 1fr;margin-top: 2%;border: 1px black solid;border-radius: 5px;background-color: white;width: 86%;padding-left: 4%;"><h1>'+leaderBoard[n]["name"]+'</h1><h1 style="font-weight:lighter;">'+leaderBoard[n]["value"]+'</h1></div>'
 			}
 	document.getElementById('body').innerHTML = '<div id="box" style="grid-template-rows: 1fr;"></div>'
-	document.getElementById('box').innerHTML = '<h1>'+"Et le gagnant c'est..."+'</h1><div class="leaderboard" style="height:100%; width: 100%;overflow-y: unset;display:grid; justify-items:center;">'+lead+'</div>'
+	document.getElementById('box').innerHTML = '<h1>'+"Et le gagnant est..."+'</h1><div class="leaderboard" style="height:100%; width: 100%;overflow-y: unset;display:grid; justify-items:center;">'+lead+'</div>'
 }
 
 </script>
