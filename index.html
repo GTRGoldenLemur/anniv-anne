@@ -174,7 +174,12 @@ function refresh() {
 			answer(question)
 		}
 		if (snapshot.val()["Question"]["statu"] === "result") {
-			document.getElementById('box').innerHTML = "<h1>Attention, les résultats sont lá!</h1>"
+			leaderBoard = (organise([{"name": "Équipe 1", "value":snapshot.val()["Teams"][1]["points"]}, {"name": "Équipe 2", "value":snapshot.val()["Teams"][2]["points"]}, {"name": "Équipe 3", "value":snapshot.val()["Teams"][3]["points"]}, {"name": "Équipe 4", "value":snapshot.val()["Teams"][4]["points"]}], 4))
+			var lead = ""
+			for (var n = 0;n<leaderBoard.length;n++){
+				lead += '<div style="display: grid;grid-template-columns: 3fr 1fr;margin: 4%;border: 1px black solid;border-radius: 5px;background-color: white;width: 86%;padding-left: 4%;"><h1>'+leaderBoard[n]["name"]+'</h1><h1 style="font-weight:lighter;">'+leaderBoard[n]["value"]+'</h1></div>'
+			}
+			document.getElementById('box').innerHTML = "<h1>Attention, les résultats sont lá!</h1><div>"+lead+"</div>"
 		}
 		else if (snapshot.val()["Question"]["statu"] === "answer") {
 			var img = ""
@@ -202,6 +207,23 @@ function refresh() {
 	})
 }
 
+	function organise(data, length) {
+		var reo_d = [data[0]]
+		for (var n = 0;n<length;n++){
+				//console.log(data[n])
+			for (var i = 0;i<reo_d.length;i++){
+				if (reo_d[i]["value"] < data[n]["value"]){
+					reo_d.splice(i,0,data[n])
+					break
+				}
+			}
+			if ((reo_d.indexOf(data[n])>-1)===false) {
+				reo_d.push(data[n])
+			}
+		}
+	console.log(reo_d)
+	return reo_d
+}
 
 console.log("hello")
 
